@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PruebaApiRestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ESTADO">
+          <Key>
+            <PropertyRef Name="ID_ESTADO" />
+          </Key>
+          <Property Name="ID_ESTADO" Type="decimal" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ESTADO_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="ESTADO_DESC" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="FABRICANTES">
+          <Key>
+            <PropertyRef Name="ID_FAB" />
+          </Key>
+          <Property Name="ID_FAB" Type="decimal" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FAB_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="FAB_DESC" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TERMINALES">
+          <Key>
+            <PropertyRef Name="ID_TERMINAL" />
+          </Key>
+          <Property Name="ID_TERMINAL" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ID_FAB" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ID_ESTADO" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="FECHA_FABRICACION" Type="datetime" />
+          <Property Name="FECHA_ESTADO" Type="datetime" />
+          <Property Name="TERMINAL_DESC" Type="varchar" MaxLength="50" />
+          <Property Name="TERMINAL_NAME" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_TERMINALES_ESTADO">
+          <End Role="ESTADO" Type="Self.ESTADO" Multiplicity="0..1" />
+          <End Role="TERMINALES" Type="Self.TERMINALES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADO">
+              <PropertyRef Name="ID_ESTADO" />
+            </Principal>
+            <Dependent Role="TERMINALES">
+              <PropertyRef Name="ID_ESTADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TERMINALES_FABRICANTES">
+          <End Role="FABRICANTES" Type="Self.FABRICANTES" Multiplicity="0..1" />
+          <End Role="TERMINALES" Type="Self.TERMINALES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FABRICANTES">
+              <PropertyRef Name="ID_FAB" />
+            </Principal>
+            <Dependent Role="TERMINALES">
+              <PropertyRef Name="ID_FAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PruebaApiRestModelStoreContainer">
+          <EntitySet Name="ESTADO" EntityType="Self.ESTADO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FABRICANTES" EntityType="Self.FABRICANTES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TERMINALES" EntityType="Self.TERMINALES" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TERMINALES_ESTADO" Association="Self.FK_TERMINALES_ESTADO">
+            <End Role="ESTADO" EntitySet="ESTADO" />
+            <End Role="TERMINALES" EntitySet="TERMINALES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TERMINALES_FABRICANTES" Association="Self.FK_TERMINALES_FABRICANTES">
+            <End Role="FABRICANTES" EntitySet="FABRICANTES" />
+            <End Role="TERMINALES" EntitySet="TERMINALES" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PruebaApiRestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ESTADO">
+          <Key>
+            <PropertyRef Name="ID_ESTADO" />
+          </Key>
+          <Property Name="ID_ESTADO" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ESTADO_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ESTADO_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TERMINALES" Relationship="Self.FK_TERMINALES_ESTADO" FromRole="ESTADO" ToRole="TERMINALES" />
+        </EntityType>
+        <EntityType Name="FABRICANTES">
+          <Key>
+            <PropertyRef Name="ID_FAB" />
+          </Key>
+          <Property Name="ID_FAB" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FAB_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FAB_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TERMINALES" Relationship="Self.FK_TERMINALES_FABRICANTES" FromRole="FABRICANTES" ToRole="TERMINALES" />
+        </EntityType>
+        <EntityType Name="TERMINALES">
+          <Key>
+            <PropertyRef Name="ID_TERMINAL" />
+          </Key>
+          <Property Name="ID_TERMINAL" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ID_FAB" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ID_ESTADO" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="FECHA_FABRICACION" Type="DateTime" Precision="3" />
+          <Property Name="FECHA_ESTADO" Type="DateTime" Precision="3" />
+          <Property Name="TERMINAL_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TERMINAL_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ESTADO" Relationship="Self.FK_TERMINALES_ESTADO" FromRole="TERMINALES" ToRole="ESTADO" />
+          <NavigationProperty Name="FABRICANTES" Relationship="Self.FK_TERMINALES_FABRICANTES" FromRole="TERMINALES" ToRole="FABRICANTES" />
+        </EntityType>
+        <Association Name="FK_TERMINALES_ESTADO">
+          <End Role="ESTADO" Type="Self.ESTADO" Multiplicity="0..1" />
+          <End Role="TERMINALES" Type="Self.TERMINALES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADO">
+              <PropertyRef Name="ID_ESTADO" />
+            </Principal>
+            <Dependent Role="TERMINALES">
+              <PropertyRef Name="ID_ESTADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TERMINALES_FABRICANTES">
+          <End Role="FABRICANTES" Type="Self.FABRICANTES" Multiplicity="0..1" />
+          <End Role="TERMINALES" Type="Self.TERMINALES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FABRICANTES">
+              <PropertyRef Name="ID_FAB" />
+            </Principal>
+            <Dependent Role="TERMINALES">
+              <PropertyRef Name="ID_FAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PruebaApiRestEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ESTADO" EntityType="Self.ESTADO" />
+          <EntitySet Name="FABRICANTES" EntityType="Self.FABRICANTES" />
+          <EntitySet Name="TERMINALES" EntityType="Self.TERMINALES" />
+          <AssociationSet Name="FK_TERMINALES_ESTADO" Association="Self.FK_TERMINALES_ESTADO">
+            <End Role="ESTADO" EntitySet="ESTADO" />
+            <End Role="TERMINALES" EntitySet="TERMINALES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TERMINALES_FABRICANTES" Association="Self.FK_TERMINALES_FABRICANTES">
+            <End Role="FABRICANTES" EntitySet="FABRICANTES" />
+            <End Role="TERMINALES" EntitySet="TERMINALES" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PruebaApiRestModelStoreContainer" CdmEntityContainer="PruebaApiRestEntities">
+          <EntitySetMapping Name="ESTADO">
+            <EntityTypeMapping TypeName="PruebaApiRestModel.ESTADO">
+              <MappingFragment StoreEntitySet="ESTADO">
+                <ScalarProperty Name="ID_ESTADO" ColumnName="ID_ESTADO" />
+                <ScalarProperty Name="ESTADO_NAME" ColumnName="ESTADO_NAME" />
+                <ScalarProperty Name="ESTADO_DESC" ColumnName="ESTADO_DESC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FABRICANTES">
+            <EntityTypeMapping TypeName="PruebaApiRestModel.FABRICANTES">
+              <MappingFragment StoreEntitySet="FABRICANTES">
+                <ScalarProperty Name="ID_FAB" ColumnName="ID_FAB" />
+                <ScalarProperty Name="FAB_NAME" ColumnName="FAB_NAME" />
+                <ScalarProperty Name="FAB_DESC" ColumnName="FAB_DESC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TERMINALES">
+            <EntityTypeMapping TypeName="PruebaApiRestModel.TERMINALES">
+              <MappingFragment StoreEntitySet="TERMINALES">
+                <ScalarProperty Name="ID_TERMINAL" ColumnName="ID_TERMINAL" />
+                <ScalarProperty Name="ID_FAB" ColumnName="ID_FAB" />
+                <ScalarProperty Name="ID_ESTADO" ColumnName="ID_ESTADO" />
+                <ScalarProperty Name="FECHA_FABRICACION" ColumnName="FECHA_FABRICACION" />
+                <ScalarProperty Name="FECHA_ESTADO" ColumnName="FECHA_ESTADO" />
+                <ScalarProperty Name="TERMINAL_DESC" ColumnName="TERMINAL_DESC" />
+                <ScalarProperty Name="TERMINAL_NAME" ColumnName="TERMINAL_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
