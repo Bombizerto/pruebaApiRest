@@ -4,26 +4,66 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using AccesoDatos;
+using AccesoDatos.POGO;
 using System.Data.Entity;
+using System.Runtime.Caching;
+
 namespace pruebaApiRest.Controllers
 {
     public class TerminalesController : ApiController
     {
         private PruebaApiRestEntities context = new PruebaApiRestEntities();
         [HttpGet]
-        public IEnumerable<TERMINALES> Get()
+        public Terminales Get()
         {
             using(PruebaApiRestEntities db=new PruebaApiRestEntities())
             {
-                return db.TERMINALES.ToList(); ;
+                var cache = MemoryCache.Default;
+                Terminales terminales;
+                if (cache.Get("Terminales") == null)
+                {
+                    var cachePolicty = new CacheItemPolicy();
+                    cachePolicty.AbsoluteExpiration = DateTime.Now.AddSeconds(60);
+                    terminales = new Terminales(db.TERMINALES.ToList());
+                    cache.Add("Terminales", terminales, cachePolicty);
+                }
+                else
+                {
+                    terminales =(Terminales)cache.Get("Terminales");
+                }
+                  
+                return terminales; 
             }
         }
         [HttpGet]
-        public TERMINALES Get(int id)
+        public Terminal Get(int id)
         {
             using(PruebaApiRestEntities db=new PruebaApiRestEntities())
             {
-                return db.TERMINALES.Where(x => x.ID_TERMINAL == id).FirstOrDefault();
+                var cache = MemoryCache.Default;
+                Terminal terminal;
+                Terminales terminales = new Terminales();
+                var cachePolicty = new CacheItemPolicy();
+                cachePolicty.AbsoluteExpiration = DateTime.Now.AddSeconds(60);
+                if (cache.Get("BusquedaTerminal") != null)
+                {
+                   terminales= (Terminales)cache.Get("BusquedaTerminal");
+                   terminal = terminales.vTerminales.Where(x => x.vId_terminal == id).FirstOrDefault();
+                    if (terminal == null)
+                    {
+                        terminal = new Terminal(db.TERMINALES.Where(x => x.ID_TERMINAL == id).FirstOrDefault());
+                        terminales.vTerminales.Add(terminal);
+                        cache.Remove("BusquedaTerminal");
+                        cache.Add("BusquedaTerminal", terminales, cachePolicty);
+                    }
+                }
+                else
+                {
+                    terminal = new Terminal(db.TERMINALES.Where(x => x.ID_TERMINAL == id).FirstOrDefault());
+                    terminales.vTerminales.Add(terminal);
+                    cache.Add("BusquedaTerminal", terminales, cachePolicty);
+                }
+                return terminal;
             }
         }
 

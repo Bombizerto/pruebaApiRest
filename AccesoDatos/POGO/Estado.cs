@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AccesoDatos.POGO
 {
-    class Estado
+  public  class Estado
     {
         private int _id_estado;
         public int vId_estado
@@ -23,8 +23,8 @@ namespace AccesoDatos.POGO
         private String _estado_desc;
         public String vEstado_desc
         {
-            get { return _estado_nombre; }
-            set { _estado_nombre = value; }
+            get { return _estado_desc; }
+            set { _estado_desc = value; }
         }
         public Estado(ESTADO estado)
         {

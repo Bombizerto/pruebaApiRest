@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AccesoDatos.POGO
 {
-    class Fabricante
+   public class Fabricante
     {
         private int _id_fab;
         public int vId_fab
@@ -27,6 +27,12 @@ namespace AccesoDatos.POGO
             set { _fab_desc = value; }
         }
 
-        public Fabricante()
+        public Fabricante(FABRICANTES fabricante)
+        {
+            vId_fab =Convert.ToInt32(fabricante.ID_FAB);
+            vFab_nombre = fabricante.FAB_NAME;
+            vFab_desc = fabricante.FAB_DESC;
+        }
+
     }
 }
