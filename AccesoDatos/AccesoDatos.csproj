@@ -76,6 +76,8 @@
     <Compile Include="POGO\Fabricante.cs" />
     <Compile Include="POGO\Terminal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\TerminalesService.cs" />
+    <Compile Include="Service\TerminalesServiceImpl.cs" />
     <Compile Include="TERMINALES.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

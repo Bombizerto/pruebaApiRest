@@ -53,13 +53,17 @@ namespace AccesoDatos.POGO
         }
         public Terminal(TERMINALES terminal)
         {
-            vId_terminal =Convert.ToInt32(terminal.ID_TERMINAL);
-            vFecha_fabricacion =(DateTime)terminal.FECHA_FABRICACION;
-            vFecha_estado = (DateTime)terminal.FECHA_ESTADO;
-            vTerminal_desc = terminal.TERMINAL_DESC;
-            vTerminal_name = terminal.TERMINAL_NAME;
-            vFabricante =new Fabricante(terminal.FABRICANTES);
-            vEstado = new Estado(terminal.ESTADO);
+            if (terminal != null)
+            {
+                vId_terminal = Convert.ToInt32(terminal.ID_TERMINAL);
+                vFecha_fabricacion = (DateTime)terminal.FECHA_FABRICACION;
+                vFecha_estado = (DateTime)terminal.FECHA_ESTADO;
+                vTerminal_desc = terminal.TERMINAL_DESC;
+                vTerminal_name = terminal.TERMINAL_NAME;
+                vFabricante = new Fabricante(terminal.FABRICANTES);
+                vEstado = new Estado(terminal.ESTADO);
+            }
+           
         }        
     }
 }

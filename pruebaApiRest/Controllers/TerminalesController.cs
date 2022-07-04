@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Http;
 using AccesoDatos;
 using AccesoDatos.POGO;
+using AccesoDatos.Service;
 using System.Data.Entity;
 using System.Runtime.Caching;
 
@@ -13,6 +14,7 @@ namespace pruebaApiRest.Controllers
     public class TerminalesController : ApiController
     {
         private PruebaApiRestEntities context = new PruebaApiRestEntities();
+        private TerminalesServiceImpl terminalImpl=new TerminalesServiceImpl();
         [HttpGet]
         public Terminales Get()
         {
@@ -24,7 +26,7 @@ namespace pruebaApiRest.Controllers
                 {
                     var cachePolicty = new CacheItemPolicy();
                     cachePolicty.AbsoluteExpiration = DateTime.Now.AddSeconds(60);
-                    terminales = new Terminales(db.TERMINALES.ToList());
+                    terminales = terminalImpl.GetAll(); 
                     cache.Add("Terminales", terminales, cachePolicty);
                 }
                 else
@@ -59,7 +61,8 @@ namespace pruebaApiRest.Controllers
                 }
                 else
                 {
-                    terminal = new Terminal(db.TERMINALES.Where(x => x.ID_TERMINAL == id).FirstOrDefault());
+                    
+                    terminal = terminalImpl.GetById(id);
                     terminales.vTerminales.Add(terminal);
                     cache.Add("BusquedaTerminal", terminales, cachePolicty);
                 }
